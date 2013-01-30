@@ -46,6 +46,16 @@ typedef enum {
 	SSPullToRefreshViewStateClosing
 } SSPullToRefreshViewState;
 
+#ifndef SSPTR_WEAK
+#if __has_feature(objc_arc_weak)
+#define SSPTR_WEAK weak
+#elif __has_feature(objc_arc)
+#define SSPTR_WEAK unsafe_unretained
+#else
+#define SSPTR_WEAK assign
+#endif
+#endif
+
 @protocol SSPullToRefreshViewDelegate;
 @protocol SSPullToRefreshContentView;
 
@@ -96,7 +106,7 @@ typedef enum {
  @see initWithScrollView:delegate:
  @see SSPullToRefreshViewDelegate
  */
-@property (nonatomic, weak) id<SSPullToRefreshViewDelegate> delegate;
+@property (nonatomic, SSPTR_WEAK) id<SSPullToRefreshViewDelegate> delegate;
 
 /**
  The state of the pull to refresh view.
